@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>express</title>
+</head>
+<body>
+  <h1>hello</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui sed quibusdam quidem nemo, quos voluptatem tempora quasi praesentium necessitatibus repudiandae! Repellat culpa odio eius laborum ab, cupiditate dolorem unde commodi.</p>
+  <button>представьтесь</button>
+</body>
+<script src='/socket.io/socket.io.js'></script>
+<script type="text/javascript">
+  let socket = io.connect('http://localhost:8080')
+  let button = document.querySelector('button');
+  window.onbeforeunload = ()=> {
+    socket.emit('a');
+    return "Данные не сохранены. Точно перейти?";
+  }
+  button.addEventListener('click', ()=>{
+    let name = prompt('name', '');
+    if (name)
+    socket.emit('message', name)
+  })
+  socket.on('hello', data => alert(data.hello))
+</script>
+</html>

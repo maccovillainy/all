@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>chat</title>
+  <style type="text/css">
+    #chat{
+      width: 500px;
+      height: 400px;
+      overflow: auto;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <section id='chat'></section>
+  <input type="" name="">
+  <button>send message</button>
+  <script src='/socket.io/socket.io.js'></script>
+  <script type="text/javascript">
+    window.onload = () => {
+      let msg = [];
+
+      let socket = io.connect('http://localhost:8080');
+      let name = prompt('name', 'guest')
+      socket.emit('enter', {name})
+      socket.on('hello', data => {
+        msg.push(data.hello);
+        chat.innerHTML = msg.join('<br>')
+      })
+
+      let button = document.querySelector('button');
+      let input = document.querySelector('input');
+      button.onclick = () => {
+        socket.emit('message', {
+          text: input.value,
+          name
+        })
+      }
+
+      socket.on('newMessage', data => {
+        msg.push(`${data.name} пишет: ${data.text}`);
+        chat.innerHTML = msg.join('<br>')
+      })
+
+      socket.on('out', data => {
+        msg.push(`нас покинул ${data.out}, оставлись ${data.rest}`)
+        chat.innerHTML = msg;
+      })
+
+      window.onunload = () => {
+        socket.disconnect()
+      }
+    }
+  </script>
+</body>
+</html>
+

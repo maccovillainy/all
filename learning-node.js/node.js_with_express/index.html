@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <h1>hello</h1>
+  <a href='#'>about</a>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+  $('a').click((e) => {
+    e.preventDefault();
+    $.ajax({
+      url: 'http://localhost:3000/about.html'
+    })
+  .then(res => {
+    console.log(res)
+      $('body').html(res)
+    }
+    )
+  .catch(err => console.log(err))
+  })
+</script>
+</body>
+</html>
